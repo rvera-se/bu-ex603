@@ -1,7 +1,7 @@
 # Schema Definitions
 ## 1. Actor — Riders
-Relation: Riders
-Schema: Riders(rider_id, rider_name, phone_number, email)
+Relation: Riders  
+Schema: Riders(rider_id, rider_name, phone_number, email)  
 
 Attribute	Domain
 rider_id	Integer
