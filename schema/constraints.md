@@ -22,7 +22,7 @@ badge_description can be NOT NULL if every badge must have a description.
 (driver_id, badge_id) is the composite primary key.  
 driver_id is a foreign key referencing Drivers(driver_id).  
 badge_id is a foreign key referencing Driver_Badges(badge_id).  
-award_date should be NOT NULL.  
+date_awarded should be NOT NULL.  
 
 ## Foreign-Key ON DELETE Behavior:
 ### Trips.rider_id → Riders.rider_id	RESTRICT  
