@@ -57,6 +57,6 @@ Schema: Driver_Badge_Awards(driver_id, badge_id, award_date)
 Attribute	Domain  
 driver_id	Integer  
 badge_id	Integer  
-award_date	Date  
+date_awarded	Date  
 
 Primary key: (driver_id, badge_id)
