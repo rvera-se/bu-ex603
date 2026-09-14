@@ -25,11 +25,11 @@ badge_id is a foreign key referencing Driver_Badges(badge_id).
 award_date should be NOT NULL.  
 
 ## Foreign-Key ON DELETE Behavior:
-Trips.rider_id → Riders.rider_id	RESTRICT  
-### Justification: A rider should not be deleted if they have existing trips. Deleting the rider could destroy important trip history.  
-Trips.driver_id → Drivers.driver_id	RESTRICT  
-### Justification: A driver should not be deleted while their trips exist because those trips need to retain their driver information for historical and financial records.  
-Driver_Badge_Awards.driver_id → Drivers.driver_id	CASCADE  
-### Justification: If a driver is permanently removed, their badge-award records have no meaning without that driver, so the associated junction records can safely be removed.  
-Driver_Badge_Awards.badge_id → Driver_Badges.badge_id	RESTRICT  
-### Justification: A badge should not be deleted while it has been awarded to drivers. This prevents historical award records from becoming invalid.
+### Trips.rider_id → Riders.rider_id	RESTRICT  
+Justification: A rider should not be deleted if they have existing trips. Deleting the rider could destroy important trip history.  
+### Trips.driver_id → Drivers.driver_id	RESTRICT  
+Justification: A driver should not be deleted while their trips exist because those trips need to retain their driver information for historical and financial records.  
+### Driver_Badge_Awards.driver_id → Drivers.driver_id	CASCADE  
+Justification: If a driver is permanently removed, their badge-award records have no meaning without that driver, so the associated junction records can safely be removed.  
+### Driver_Badge_Awards.badge_id → Driver_Badges.badge_id	RESTRICT  
+Justification: A badge should not be deleted while it has been awarded to drivers. This prevents historical award records from becoming invalid.
