@@ -9,4 +9,4 @@ The database must support questions about trip activity, rider usage, driver per
   
 The system therefore needs to preserve relationships between riders, trips, drivers, and driver badges while maintaining accurate historical information. In particular, trip records must remain associated with the appropriate rider and driver, and badge awards must correctly represent the many-to-many relationship between drivers and badges. This allows the platform to answer both operational questions, such as identifying the participants in a trip, and analytical questions, such as comparing driver activity or fares based on driver badges.  
 
-<img width="852" height="602" alt="erd" src="https://github.com/user-attachments/assets/07a82d9e-ff55-4d35-953d-fa40663557cb" />
+<img width="902" height="559" alt="Ride Sharing drawio" src="https://github.com/user-attachments/assets/3318a899-a76d-47af-8a96-743395dfa898" />
