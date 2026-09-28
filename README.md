@@ -124,4 +124,6 @@ Several database design principles are reflected throughout the schema:
 6. **Appropriate Data Types** – `NUMERIC(10,2)` is used for monetary values, while `TIMESTAMP` is used for trip dates to preserve both date and time.
 7. **Controlled Deletion Behavior** – `ON DELETE RESTRICT` protects historical and referenced data, while `ON DELETE CASCADE` automatically cleans up dependent badge-award records when a driver is removed.
 
+## ERD
+
 <img width="902" height="559" alt="Ride Sharing drawio" src="https://github.com/user-attachments/assets/3318a899-a76d-47af-8a96-743395dfa898" />
