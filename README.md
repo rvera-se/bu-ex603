@@ -127,3 +127,120 @@ Several database design principles are reflected throughout the schema:
 ## ERD
 
 <img width="902" height="559" alt="Ride Sharing drawio" src="https://github.com/user-attachments/assets/3318a899-a76d-47af-8a96-743395dfa898" />
+
+## Query Catalogue
+
+4.1.1
+Calculate the count, total, average, minimum, and maximum of fare_amount across the whole trips table, and how many distinct actors appear.
+
+SELECT
+    COUNT(fare_amount) AS fare_count,
+    SUM(fare_amount) AS total_fare,
+    AVG(fare_amount) AS average_fare,
+    MIN(fare_amount) AS minimum_fare,
+    MAX(fare_amount) AS maximum_fare,
+    COUNT(DISTINCT rider_id) AS distinct_actors
+FROM trips;
+
+4.1.2
+Calculate the trip count and average fare_amount for each driver. Sort the results from the driver with the most trips to the driver with the fewest.
+
+SELECT
+    driver_id AS driver,
+    COUNT(*) AS trip_count,
+    AVG(fare_amount) AS average_fare
+FROM trips
+GROUP BY driver_id
+ORDER BY trip_count DESC;
+
+4.1.3
+Calculate driver, trip_count, and average_fare per driver of drivers that have completed at least 15 trips. Group by driver_id and order by trip amount on descending order. I chose a minimum trip-count threshold for drivers. Drivers with more trips generally have averages that are less affected by a few unusual events. A driver with only 3 trips might have an unusually high or low average that doesn't reflect their typical performance. Requiring at least 15 trips allows drivers to be compared with a more substantial amount of data.
+
+SELECT
+    driver_id AS driver,
+    COUNT(*) AS trip_count,
+    AVG(fare_amount) AS average_fare
+FROM trips
+GROUP BY driver_id
+HAVING COUNT(*) >= 15
+ORDER BY trip_count DESC;
+
+4.1.4
+Calculate the amount of trips, total fare, average fare, minimum fare, and maximum fare of each driver per region.
+
+SELECT
+    pickup_city AS region,
+    driver_id AS driver,
+    COUNT(*) AS trip_count,
+    SUM(fare_amount) AS total_fare,
+    AVG(fare_amount) AS average_fare,
+    MIN(fare_amount) AS minimum_fare,
+    MAX(fare_amount) AS maximum_fare
+FROM trips
+GROUP BY pickup_city, driver_id
+ORDER BY pickup_city, trip_count DESC;
+
+4.2 Part A
+Compute the total number of trips and the total number of trips classified as failures per driver
+
+SELECT
+    driver_id AS driver,
+    COUNT(*) AS total_trips,
+    SUM(
+        CASE
+            WHEN trip_status = 'cancelled' THEN 1
+            ELSE 0
+        END
+    ) AS failed_trips
+FROM trips
+GROUP BY driver_id
+ORDER BY failed_trips DESC;
+
+4.2 Part B
+Produces regional subtotals and a platform-wide grand total without including the individual detail rows.
+
+SELECT
+    CASE
+        WHEN GROUPING(pickup_city) = 1 THEN 'GRAND TOTAL'
+        ELSE pickup_city
+    END AS region,
+    COUNT(*) AS total_trips,
+    SUM(
+        CASE
+            WHEN trip_status = 'cancelled' THEN 1
+            ELSE 0
+        END
+    ) AS failed_trips
+FROM trips
+GROUP BY ROLLUP (pickup_city)
+ORDER BY
+    GROUPING(pickup_city),
+    pickup_city;
+
+4.2 Part C
+Create an intermediate result that summarizes performance for each producer, then use a second aggregation or filter on that intermediate result to calculate a baseline for high-volume producers.
+
+WITH driver_performance AS (
+    SELECT
+        driver_id AS driver,
+        COUNT(*) AS total_trips,
+        SUM(
+            CASE
+                WHEN trip_status = 'cancelled' THEN 1
+                ELSE 0
+            END
+        ) AS failed_trips
+    FROM trips
+    GROUP BY driver_id
+)
+SELECT
+    COUNT(*) AS high_volume_drivers,
+    AVG(total_trips) AS avg_trips,
+    AVG(failed_trips) AS avg_failed_trips,
+    AVG(
+        ROUND(
+                1.0 * failed_trips / NULLIF(total_trips, 0)
+        , 4)
+    ) AS avg_failure_rate
+FROM driver_performance
+WHERE total_trips >= 15;
