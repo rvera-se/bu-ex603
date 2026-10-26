@@ -130,7 +130,7 @@ Several database design principles are reflected throughout the schema:
 
 ## Query Catalogue
 
-4.1.1
+**4.1.1**
 Calculate the count, total, average, minimum, and maximum of fare_amount across the whole trips table, and how many distinct actors appear.
 
 SELECT
@@ -142,7 +142,7 @@ SELECT
     COUNT(DISTINCT rider_id) AS distinct_actors
 FROM trips;
 
-4.1.2
+**4.1.2**
 Calculate the trip count and average fare_amount for each driver. Sort the results from the driver with the most trips to the driver with the fewest.
 
 SELECT
@@ -153,7 +153,7 @@ FROM trips
 GROUP BY driver_id
 ORDER BY trip_count DESC;
 
-4.1.3
+**4.1.3**
 Calculate driver, trip_count, and average_fare per driver of drivers that have completed at least 15 trips. Group by driver_id and order by trip amount on descending order. I chose a minimum trip-count threshold for drivers. Drivers with more trips generally have averages that are less affected by a few unusual events. A driver with only 3 trips might have an unusually high or low average that doesn't reflect their typical performance. Requiring at least 15 trips allows drivers to be compared with a more substantial amount of data.
 
 SELECT
@@ -165,7 +165,7 @@ GROUP BY driver_id
 HAVING COUNT(*) >= 15
 ORDER BY trip_count DESC;
 
-4.1.4
+**4.1.4**
 Calculate the amount of trips, total fare, average fare, minimum fare, and maximum fare of each driver per region.
 
 SELECT
@@ -180,7 +180,7 @@ FROM trips
 GROUP BY pickup_city, driver_id
 ORDER BY pickup_city, trip_count DESC;
 
-4.2 Part A
+**4.2 Part A**
 Compute the total number of trips and the total number of trips classified as failures per driver
 
 SELECT
@@ -196,7 +196,7 @@ FROM trips
 GROUP BY driver_id
 ORDER BY failed_trips DESC;
 
-4.2 Part B
+**4.2 Part B**
 Produces regional subtotals and a platform-wide grand total without including the individual detail rows.
 
 SELECT
@@ -217,7 +217,7 @@ ORDER BY
     GROUPING(pickup_city),
     pickup_city;
 
-4.2 Part C
+**4.2 Part C**
 Create an intermediate result that summarizes performance for each producer, then use a second aggregation or filter on that intermediate result to calculate a baseline for high-volume producers.
 
 WITH driver_performance AS (
