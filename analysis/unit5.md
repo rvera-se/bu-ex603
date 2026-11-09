@@ -12,3 +12,23 @@ Since a driver can earn multiple badges and each badge can be awarded to multipl
 The junction table stores these associations and the date each badge was awarded.
 Without it, connecting drivers to their badges would be more difficult because there would be no direct way to identify which badges 
 belong to each driver or which drivers earned a particular badge.
+
+## Task 5.2
+### 1. Which producers were excluded by the inner join? Report their identifiers.
+The two producers excluded by the inner join were Driver_14 (driver_id = 14) and Driver_15 (driver_id = 15). Neither producer has any associated trips in the database.
+
+### 2. What does it mean when a producer has no events? What are some possible explanations?
+A producer with no events has no recorded trips associated with their driver ID. This could mean the driver has never completed a trip, has not yet received a trip assignment, is no longer active, or has not started working on the platform. However, the data only confirms that no trips are recorded; it does not explain why.
+
+### 3. How could a report based only on an inner join give leadership an incomplete picture of the platform?
+A report based only on an inner join would exclude producers who have no associated events. As a result, leadership might believe that all registered producers are participating in platform activities, overlooking drivers who have never had a recorded trip.
+
+### 4. Why might leadership want to identify producers who have never been active?
+Leadership may want to identify producers with no recorded activity to better understand platform participation, evaluate driver onboarding and engagement, and determine whether registered drivers are contributing to the platform. Identifying these producers could also help reveal potential issues with recruitment, retention, or driver availability that require further investigation.
+
+### 5. What action could leadership take based on these findings?
+Leadership could investigate why Driver_14 and Driver_15 have no recorded trips by reviewing their onboarding status, account activity, and availability. If they are still expected to participate, leadership could contact them to identify possible barriers and offer assistance. If they are no longer active, their records or account statuses could be reviewed and updated accordingly.
+
+Overall, the data confirms that two out of the fifteen producers have no recorded trips. It does not establish whether these drivers are inactive, unavailable, or experiencing other issues, so further investigation would be necessary before leadership decides what action to take.
+
+## Task 5.3
