@@ -33,3 +33,17 @@ I chose a seven-trip moving average because it provides a short-term view of rec
 The gap identified for Driver 5 shows that no trips were recorded between February 1, 2023, and May 5, 2023, approximately 93 days. I would classify this as a period of recorded inactivity rather than immediately assuming a data quality problem. The database confirms that the driver had trips before and after this period, but it does not provide enough historical information to determine why the gap occurred. Driver 5 is currently marked as active in the drivers table, but that does not establish whether the driver was active throughout the missing period. Leadership should investigate historical driver activity records to determine whether the driver temporarily stopped accepting trips or whether some events were not recorded.
 
 # Task 6.3
+
+## **1. Top-N feature**
+
+The top-N query could power a **Top Trips Leaderboard** on the platform's driver dashboard. It would show each driver their three highest-fare trips, helping them understand which trips generated the most revenue.
+
+Three is a good number because it provides enough examples to identify patterns without overwhelming the user. Showing only one trip might not provide enough information to recognize a trend, while showing ten would include more information than necessary for a quick comparison. Three provides a useful balance between highlighting the strongest results and keeping the leaderboard easy to read.
+
+## **2. Month-over-month changes**
+
+A large month-over-month change in total fare amount could indicate a significant shift in platform activity or revenue. For example, a substantial decrease might suggest fewer trips, lower fares, reduced demand, or an increase in cancellations. A significant increase could indicate higher demand, more completed trips, or increased fares.
+
+Someone managing the platform should investigate the cause before taking action. They could compare monthly trip counts, trip statuses, average fares, and surge multipliers to determine what contributed to the change. If the decrease is caused by reduced demand, the company could introduce promotions or improve driver availability. If cancellations are increasing, management could investigate the reasons and address the underlying problems.
+
+The goal is not simply to observe whether revenue increased or decreased, but to understand why it happened and take action to improve the platform's performance.
