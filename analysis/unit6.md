@@ -47,3 +47,13 @@ A large month-over-month change in total fare amount could indicate a significan
 Someone managing the platform should investigate the cause before taking action. They could compare monthly trip counts, trip statuses, average fares, and surge multipliers to determine what contributed to the change. If the decrease is caused by reduced demand, the company could introduce promotions or improve driver availability. If cancellations are increasing, management could investigate the reasons and address the underlying problems.
 
 The goal is not simply to observe whether revenue increased or decreased, but to understand why it happened and take action to improve the platform's performance.
+
+# Reflection
+
+In the ride-sharing platform, a useful reporting question would be: **How does each trip's fare compare with the driver's average fare across all their trips?** This would help management identify trips that generated unusually high or low fares while still seeing the details of each individual trip.
+
+A window function makes this possible by calculating the average fare for each driver using `AVG(fare_amount) OVER (PARTITION BY driver_id)`. The query can display that average alongside every trip's ID, date, and fare amount. This allows management to compare each trip against its driver's overall performance without losing the individual trip records.
+
+Using `GROUP BY` alone would be awkward because grouping by driver would collapse multiple trips into a single row. The resulting report could show each driver's average fare, but it would no longer display every trip alongside that average. Including the trip ID in the grouping would also change the calculation because each trip would become its own group.
+
+Window functions are therefore valuable for reports that need both detailed records and summarized information. They provide context for individual trips while preserving the original rows, making comparisons and trend analysis easier.
