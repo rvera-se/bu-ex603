@@ -300,3 +300,94 @@ Future improvements could include:
 - **Consistent performance metrics:** Establish standardized definitions for completed, cancelled, and disputed trips so that reports use consistent denominators and comparisons.
 
 These improvements would provide management with a more complete understanding of platform performance and support more reliable operational decisions.
+
+## How to Run
+
+This project uses **PostgreSQL**. The following instructions assume that PostgreSQL is installed, the database server is running, and the user has access to an existing database.
+
+### Prerequisites
+
+- PostgreSQL database server.
+- PostgreSQL command-line client (`psql`).
+- A database with permission to create tables.
+
+### Step 1: Connect to the Database
+
+Open a terminal from the repository's root directory and connect to your PostgreSQL database:
+
+```bash
+psql -U postgres -d ride_sharing
+```
+
+Replace `postgres` with your PostgreSQL username and `ride_sharing` with the name of your database.
+
+If the database does not exist, create it first:
+
+```sql
+CREATE DATABASE ride_sharing;
+```
+
+### Step 2: Create the Schema
+
+Execute the schema definition file from the repository root:
+
+```bash
+psql -U postgres -d ride_sharing -f schema/rideshare.sql
+```
+
+This creates the five relational tables:
+
+- `riders`
+- `drivers`
+- `trips`
+- `driver_badges`
+- `driver_badge_awards`
+
+The schema establishes primary keys, foreign keys, unique constraints, check constraints, and the relationships between the tables.
+
+To verify that the tables were created successfully, connect to the database and execute:
+
+```sql
+\dt
+```
+
+### Step 3: Execute a Query
+
+Individual SQL files can be executed directly from the terminal using the `-f` option.
+
+For example, to execute the first Unit 3 query file:
+
+```bash
+psql -U postgres -d ride_sharing -f queries/unit3/q3_1.sql
+```
+
+Other query files can be executed using the same format:
+
+```bash
+psql -U postgres -d ride_sharing -f queries/unit3/q3_2.sql
+
+psql -U postgres -d ride_sharing -f queries/unit4/q4_1.sql
+
+psql -U postgres -d ride_sharing -f queries/unit5/q5_1.sql
+
+psql -U postgres -d ride_sharing -f queries/unit6/q6_1.sql
+```
+
+To execute a query file from an existing `psql` session, use:
+
+```sql
+\i queries/unit6/q6_1.sql
+```
+
+Replace the file path with the query you want to execute.
+
+### Step 4: Review the Results
+
+PostgreSQL displays the query results directly in the terminal. Each query file contains multiple SQL statements where applicable, so multiple result sets may be displayed during execution.
+
+For graphical database tools such as pgAdmin or DataGrip, the same process can be completed by:
+
+1. Connecting to the `ride_sharing` database.
+2. Opening `schema/rideshare.sql` in the SQL editor and executing it.
+3. Opening the desired query file from the `queries` directory.
+4. Executing the SQL statements and reviewing the results.
