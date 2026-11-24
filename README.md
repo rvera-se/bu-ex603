@@ -130,124 +130,173 @@ Several database design principles are reflected throughout the schema:
 
 ## Query Catalogue
 
-**4.1.1**
+The following catalogue organizes the SQL queries by unit and identifies the business question each query addresses. Each identifier corresponds to a task or query within its associated SQL file.
 
-Calculate the count, total, average, minimum, and maximum of fare_amount across the whole trips table, and how many distinct actors appear.
+### Unit 3 — Interrogating the Data
 
-SELECT
-    COUNT(fare_amount) AS fare_count,
-    SUM(fare_amount) AS total_fare,
-    AVG(fare_amount) AS average_fare,
-    MIN(fare_amount) AS minimum_fare,
-    MAX(fare_amount) AS maximum_fare,
-    COUNT(DISTINCT rider_id) AS distinct_actors
-FROM trips;
+| Query ID | Business Question | SQL File |
+|---|---|---|
+| 3.1.1 | Which active drivers have an average rating of at least 4.5? | [q3_1.sql](queries/unit3/q3_1.sql) |
+| 3.1.2 | What different trip statuses exist in the platform? | [q3_1.sql](queries/unit3/q3_1.sql) |
+| 3.1.3a–b | Which trips meet distance requirements or originate in selected cities? | [q3_1.sql](queries/unit3/q3_1.sql) |
+| 3.1.4a–b | How can driver names be filtered, and how should missing cancellation reasons be displayed? | [q3_1.sql](queries/unit3/q3_1.sql) |
+| 3.1.5 | How can trips be categorized according to their distance? | [q3_1.sql](queries/unit3/q3_1.sql) |
+| 3.2A–B | How do NULL values affect filtering and counting cancellation reasons? | [q3_2.sql](queries/unit3/q3_2.sql) |
+| 3.2C | How can NULL cancellation reasons be included while excluding payment failures? | [q3_2.sql](queries/unit3/q3_2.sql) |
+| 3.2D | How can fare per kilometer be calculated and filtered using an expression or CTE? | [q3_2.sql](queries/unit3/q3_2.sql) |
+| 3.3.1 | Which riders were involved in disputed trips using a subquery? | [q3_3.sql](queries/unit3/q3_3.sql) |
+| 3.3.2 | Which riders were involved in disputed trips using a CTE? | [q3_3.sql](queries/unit3/q3_3.sql) |
+| 3.3.3 | Which riders were involved in disputed trips using EXISTS? | [q3_3.sql](queries/unit3/q3_3.sql) |
+| 3.3.5 | Under what conditions could the three approaches return different rider sets? | [q3_3.sql](queries/unit3/q3_3.sql) |
 
-**4.1.2**
+### Unit 4 — Aggregation and Grouping
 
-Calculate the trip count and average fare_amount for each driver. Sort the results from the driver with the most trips to the driver with the fewest.
+| Query ID | Business Question | SQL File |
+|---|---|---|
+| 4.1.1 | What are the overall fare statistics and number of distinct riders? | [q4_1.sql](queries/unit4/q4_1.sql) |
+| 4.1.2 | How many trips does each driver complete, and what is their average fare? | [q4_1.sql](queries/unit4/q4_1.sql) |
+| 4.1.3 | Which drivers have completed at least 15 trips, and what are their average fares? | [q4_1.sql](queries/unit4/q4_1.sql) |
+| 4.1.4 | How do trip counts and fare statistics vary by driver and region? | [q4_1.sql](queries/unit4/q4_1.sql) |
+| 4.2A | How many total and cancelled trips are associated with each driver? | [q4_2.sql](queries/unit4/q4_2.sql) |
+| 4.2B | What are the regional cancellation totals and platform-wide grand total? | [q4_2.sql](queries/unit4/q4_2.sql) |
+| 4.2C | What is the average trip volume and cancellation rate among high-volume drivers? | [q4_2.sql](queries/unit4/q4_2.sql) |
 
-SELECT
-    driver_id AS driver,
-    COUNT(*) AS trip_count,
-    AVG(fare_amount) AS average_fare
-FROM trips
-GROUP BY driver_id
-ORDER BY trip_count DESC;
+### Unit 5 — Joins and Relationships
 
-**4.1.3**
+| Query ID | Business Question | SQL File |
+|---|---|---|
+| 5.1.1 | Which riders and drivers are associated with each trip? | [q5_1.sql](queries/unit5/q5_1.sql) |
+| 5.1.2 | Which drivers have earned badges, and which badges were awarded? | [q5_1.sql](queries/unit5/q5_1.sql) |
+| 5.1.3 | Which pairs of drivers live in the same city? | [q5_1.sql](queries/unit5/q5_1.sql) |
+| 5.2A1–A2 | How do LEFT JOIN and INNER JOIN differ when identifying drivers with trips? | [q5_2.sql](queries/unit5/q5_2.sql) |
+| 5.2A3 | How many drivers have never participated in a trip? | [q5_2.sql](queries/unit5/q5_2.sql) |
+| 5.2B1 | How can a RIGHT JOIN preserve all registered drivers? | [q5_2.sql](queries/unit5/q5_2.sql) |
+| 5.2B2 | Are there unmatched drivers or trips when both tables are combined? | [q5_2.sql](queries/unit5/q5_2.sql) |
+| 5.2C1–C2 | Which drivers have never completed a trip, using NOT EXISTS and EXCEPT? | [q5_2.sql](queries/unit5/q5_2.sql) |
+| 5.3A1–A2 | How many driver-badge combinations can a CROSS JOIN generate? | [q5_3.sql](queries/unit5/q5_3.sql) |
+| 5.3A3 | How can a CTE calculate the number of possible driver-badge combinations? | [q5_3.sql](queries/unit5/q5_3.sql) |
+| 5.3B | How does PostgreSQL execute a multi-table join, and which join algorithms does it select? | [q5_3.sql](queries/unit5/q5_3.sql) |
 
-Calculate driver, trip_count, and average_fare per driver of drivers that have completed at least 15 trips. Group by driver_id and order by trip amount on descending order. I chose a minimum trip-count threshold for drivers. Drivers with more trips generally have averages that are less affected by a few unusual events. A driver with only 3 trips might have an unusually high or low average that doesn't reflect their typical performance. Requiring at least 15 trips allows drivers to be compared with a more substantial amount of data.
+### Unit 6 — Window Functions and Advanced Analysis
 
-SELECT
-    driver_id AS driver,
-    COUNT(*) AS trip_count,
-    AVG(fare_amount) AS average_fare
-FROM trips
-GROUP BY driver_id
-HAVING COUNT(*) >= 15
-ORDER BY trip_count DESC;
+| Query ID | Business Question | SQL File |
+|---|---|---|
+| 6.1.1A–B | How does each trip's fare compare with its driver's average fare? | [q6_1.sql](queries/unit6/q6_1.sql) |
+| 6.1.2 | How do ROW_NUMBER(), RANK(), and DENSE_RANK() rank drivers by trip volume? | [q6_1.sql](queries/unit6/q6_1.sql) |
+| 6.1.3 | How can drivers be divided into four groups based on trip volume? | [q6_1.sql](queries/unit6/q6_1.sql) |
+| 6.2A | How do consecutive trip fares change for an individual driver? | [q6_2.sql](queries/unit6/q6_2.sql) |
+| 6.2B | How does cumulative fare revenue develop, and how close is the platform to its revenue target? | [q6_2.sql](queries/unit6/q6_2.sql) |
+| 6.2C | When has a driver gone more than 30 days without a recorded trip? | [q6_2.sql](queries/unit6/q6_2.sql) |
+| 6.3A | What are the three highest-fare trips for each driver? | [q6_3.sql](queries/unit6/q6_3.sql) |
+| 6.3B | How do monthly fare totals change, and are there months without recorded trips? | [q6_3.sql](queries/unit6/q6_3.sql) |
 
-**4.1.4**
+## Technical Highlights
 
-Calculate the amount of trips, total fare, average fare, minimum fare, and maximum fare of each driver per region.
+The project applies several SQL techniques to answer operational and analytical questions about the ride-sharing platform.
 
-SELECT
-    pickup_city AS region,
-    driver_id AS driver,
-    COUNT(*) AS trip_count,
-    SUM(fare_amount) AS total_fare,
-    AVG(fare_amount) AS average_fare,
-    MIN(fare_amount) AS minimum_fare,
-    MAX(fare_amount) AS maximum_fare
-FROM trips
-GROUP BY pickup_city, driver_id
-ORDER BY pickup_city, trip_count DESC;
+### 1. Joins and Many-to-Many Relationships
 
-**4.2 Part A**
+Multiple JOIN operations were used to combine riders, drivers, trips, and driver badges into meaningful reports. For example, the three-table join in Unit 5 connects riders and drivers through their associated trips, allowing the platform to identify both participants in each transaction.
 
-Compute the total number of trips and the total number of trips classified as failures per driver
+The junction table, `Driver_Badge_Awards`, was also used to resolve the many-to-many relationship between drivers and badges. This allows the platform to retrieve actual badge assignments without generating unrelated combinations.
 
-SELECT
-    driver_id AS driver,
-    COUNT(*) AS total_trips,
-    SUM(
-        CASE
-            WHEN trip_status = 'cancelled' THEN 1
-            ELSE 0
-        END
-    ) AS failed_trips
-FROM trips
-GROUP BY driver_id
-ORDER BY failed_trips DESC;
+LEFT JOIN, RIGHT JOIN, and FULL OUTER JOIN were additionally compared to identify missing relationships and records that would otherwise be excluded.
 
-**4.2 Part B**
+**Why it was useful:** Joins allowed information stored across normalized tables to be combined into reports while preserving or identifying records that did not have matching relationships.
 
-Produces regional subtotals and a platform-wide grand total without including the individual detail rows.
+### 2. Aggregations, Conditional Logic, and CTEs
 
-SELECT
-    CASE
-        WHEN GROUPING(pickup_city) = 1 THEN 'GRAND TOTAL'
-        ELSE pickup_city
-    END AS region,
-    COUNT(*) AS total_trips,
-    SUM(
-        CASE
-            WHEN trip_status = 'cancelled' THEN 1
-            ELSE 0
-        END
-    ) AS failed_trips
-FROM trips
-GROUP BY ROLLUP (pickup_city)
-ORDER BY
-    GROUPING(pickup_city),
-    pickup_city;
+COUNT(), SUM(), AVG(), MIN(), and MAX() were used to analyze trip volume, fare statistics, and driver performance.
 
-**4.2 Part C**
+Conditional aggregation with CASE WHEN was applied to count cancelled trips separately from total trips. ROLLUP was also used to calculate regional subtotals and a platform-wide grand total within a single query.
 
-Create an intermediate result that summarizes performance for each producer, then use a second aggregation or filter on that intermediate result to calculate a baseline for high-volume producers.
+In Unit 4, a Common Table Expression (CTE) named `driver_performance` first calculated each driver's trip count and cancelled trips. A second aggregation then established a performance baseline for drivers with at least 15 trips.
 
-WITH driver_performance AS (
-    SELECT
-        driver_id AS driver,
-        COUNT(*) AS total_trips,
-        SUM(
-            CASE
-                WHEN trip_status = 'cancelled' THEN 1
-                ELSE 0
-            END
-        ) AS failed_trips
-    FROM trips
-    GROUP BY driver_id
-)
-SELECT
-    COUNT(*) AS high_volume_drivers,
-    AVG(total_trips) AS avg_trips,
-    AVG(failed_trips) AS avg_failed_trips,
-    AVG(
-        ROUND(
-                1.0 * failed_trips / NULLIF(total_trips, 0)
-        , 4)
-    ) AS avg_failure_rate
-FROM driver_performance
-WHERE total_trips >= 15;
+**Why it was useful:** These techniques transformed individual trip records into meaningful performance indicators, allowing leadership to compare drivers, evaluate cancellation patterns, and summarize platform activity.
+
+### 3. Subqueries, EXISTS, and NULL Handling
+
+Unit 3 explored SQL's three-valued logic and how NULL values affect filtering conditions. In particular, a comparison such as `cancellation_reason != 'Payment failed'` does not include NULL records because the comparison evaluates to UNKNOWN.
+
+The project addressed this by using COALESCE to provide a replacement value and preserve records with missing cancellation reasons.
+
+Subqueries, CTEs, and EXISTS were also compared when identifying riders involved in disputed trips.
+
+**Why it was useful:** These techniques helped prevent missing records from being unintentionally excluded and demonstrated how different query structures can answer the same business question.
+
+### 4. Window Functions and Analytical Rankings
+
+Window functions were applied throughout Unit 6 to analyze individual trips without collapsing the underlying records.
+
+Examples include:
+
+- `AVG() OVER (PARTITION BY driver_id)` to compare each trip's fare with its driver's average.
+- `ROW_NUMBER()`, `RANK()`, and `DENSE_RANK()` to evaluate different ranking methods for driver performance.
+- `LAG()` and `LEAD()` to compare consecutive trip fares and identify periods of driver inactivity.
+- `SUM() OVER()` and `AVG() OVER()` to calculate cumulative revenue and a seven-trip moving average.
+- `NTILE(4)` to divide drivers into four groups based on their trip counts.
+
+**Why it was useful:** Window functions allowed detailed trip-level information to remain visible while adding useful analytical context, making it possible to identify trends, compare performance, and develop leaderboard-style reports.
+
+### 5. Query Optimization and Execution Plans
+
+PostgreSQL's `EXPLAIN` command was used to inspect how the database executes a three-table join involving riders, drivers, and trips.
+
+The execution plan identified a Hash Join between trips and riders, followed by a Nested Loop Join to retrieve matching drivers through the primary key index. PostgreSQL also used Memoize to cache repeated driver lookups and reduce unnecessary database work.
+
+**Why it was useful:** Examining execution plans provided insight into how PostgreSQL selects join algorithms and uses indexes. It also helped identify operations, such as sorting and repeated lookups, that may become more expensive as the platform's dataset grows.
+
+## Findings and Recommendations
+
+The SQL analysis revealed several important patterns that could influence the platform's operational decisions.
+
+### Finding 1: Some Drivers Have Never Participated in a Recorded Trip
+
+The analysis identified 15 registered drivers, but only 13 had associated trip records. Drivers 14 and 15 had no recorded trips and were excluded from INNER JOIN results.
+
+This distinction is important because a report based exclusively on INNER JOIN could create an incomplete picture of platform participation by excluding registered drivers who have never completed a trip.
+
+**Recommendation:** Management should investigate the onboarding status, account activation, and availability of these two drivers. If they are expected to be active, the platform should contact them to identify potential barriers and help them complete their first trip.
+
+### Finding 2: Trip Cancellations Remain an Operational Concern
+
+The Unit 6 analysis identified an improvement in the cancellation rate during 2023, although progress largely stalled toward the end of the year.
+
+| Quarter | Cancelled Trips | Cancellation Rate |
+|---|---:|---:|
+| Q1 2023 | 12 | 22.64% |
+| Q2 2023 | 7 | 14.58% |
+| Q3 2023 | 8 | 15.69% |
+| Q4 2023 | 7 | 14.58% |
+
+Across the year, 34 cancellations were recorded. Rider no-shows accounted for 12, rider cancellations for 8, payment failures for 7, and driver unavailability for 7.
+
+Driver 11 had the highest cancellation count with 5, while Drivers 2, 6, and 9 each had 4.
+
+**Recommendation:** Management should prioritize improving rider confirmation and reminder processes, investigating payment failures, and monitoring driver availability. Drivers with repeated cancellations should receive individual reviews, but cancellation responsibility should be established before attributing the problem to a particular driver.
+
+### Finding 3: Reporting Accuracy Is Important for Driver Performance Decisions
+
+The Unit 3 investigation identified a reporting issue involving disputed trips. The dashboard was associating disputed-trip activity with riders rather than correctly identifying the drivers involved.
+
+Because riders request trips and drivers provide them, confusing these roles can result in the wrong accounts being flagged when determining whose bonuses should be frozen.
+
+**Recommendation:** The dashboard should use the driver associated with each disputed trip when evaluating driver-related bonus decisions. Previously affected bonuses should be reviewed against the actual trip records and applicable bonus rules before any payment is withheld.
+
+## Limitations and Future Improvements
+
+One important limitation of this analysis is that the available dataset provides a relatively narrow view of platform activity. Although the trip records contain useful information about fares, cancellation reasons, distances, and driver participation, they do not provide enough historical operational context to establish why certain patterns occur.
+
+For example, the analysis identified a period of approximately 93 days between Driver 5's recorded trips. However, the database does not contain sufficient historical availability or account-activity information to determine whether the driver temporarily stopped working, was unavailable, or had trips that were not recorded.
+
+Similarly, an increase in fare amounts cannot automatically be attributed to higher demand, longer distances, or surge pricing without additional supporting information.
+
+Future improvements could include:
+
+- **Driver activity history:** Store account activation, availability, deactivation, and last-active timestamps to distinguish inactivity from missing trip records.
+- **Trip distance and pricing details:** Include pricing breakdowns, surge multipliers, and actual trip durations to explain unusual fare changes.
+- **Cancellation tracking:** Record the responsible party and detailed cancellation circumstances to distinguish rider-related issues from driver-related problems.
+- **Larger historical datasets:** Analyze multiple years of trip records to identify seasonal patterns, long-term trends, and changes in driver retention.
+- **Consistent performance metrics:** Establish standardized definitions for completed, cancelled, and disputed trips so that reports use consistent denominators and comparisons.
+
+These improvements would provide management with a more complete understanding of platform performance and support more reliable operational decisions.
