@@ -301,6 +301,10 @@ Future improvements could include:
 
 These improvements would provide management with a more complete understanding of platform performance and support more reliable operational decisions.
 
+## Video Presentation
+
+Link to Video: https://drive.google.com/drive/folders/1ZpIVgcJXxZh0zMqO3e45VT82N7xecI65?usp=sharing
+
 ## How to Run
 
 This project uses **PostgreSQL**. The following instructions assume that PostgreSQL is installed, the database server is running, and the user has access to an existing database.
