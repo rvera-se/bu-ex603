@@ -55,6 +55,13 @@ GROUP BY cancellation_reason
 ORDER BY cancellation_count DESC;
 ```
 
+| cancellation_reason | cancellation_count |
+|---|---:|
+| Rider no show | 12 |
+| Rider cancelled | 8 |
+| Payment failed | 7 |
+| Driver unavailable | 7 |
+
 **Query 3 – Drivers with the most cancellations**
 
 ```
@@ -72,6 +79,21 @@ WHERE t.trip_status = 'cancelled'
 GROUP BY d.driver_id, d.driver_name
 ORDER BY cancelled_trips DESC, d.driver_id;
 ```
+
+| driver_id | driver_name | cancelled_trips |
+|---:|---|---:|
+| 11 | Driver_11 | 5 |
+| 2 | Driver_02 | 4 |
+| 6 | Driver_06 | 4 |
+| 9 | Driver_09 | 4 |
+| 3 | Driver_03 | 3 |
+| 5 | Driver_05 | 3 |
+| 7 | Driver_07 | 3 |
+| 1 | Driver_01 | 2 |
+| 4 | Driver_04 | 2 |
+| 12 | Driver_12 | 2 |
+| 8 | Driver_08 | 1 |
+| 13 | Driver_13 | 1 |
 
 **Overall recommendation:** Next quarter, management should prioritize reducing rider no-shows, resolving payment failures, and reviewing driver availability. The team should monitor cancellation rates monthly and compare them with the previous quarter to determine whether these actions are producing measurable improvements.
 
